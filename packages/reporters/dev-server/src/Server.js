@@ -40,7 +40,7 @@ export function setHeaders(res: Response) {
   );
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Content-Type', 'Authorization',
+    'Origin, X-Requested-With, Content-Type, Accept, Content-Type',
   );
   res.setHeader('Cache-Control', 'max-age=0, must-revalidate');
 }
@@ -480,12 +480,6 @@ export default class Server {
     const app = connect();
     app.use((req, res, next) => {
       setHeaders(res);
-      if (req.method === 'OPTIONS') {
-        res.statusCode = 200;
-        res.end();
-        return;
-      }
-      next();
     });
 
     app.use((req, res, next) => {
@@ -499,6 +493,16 @@ export default class Server {
     });
 
     await this.applyProxyTable(app);
+
+    app.use((req, res) => {
+      if (req.method === 'OPTIONS') {
+        res.statusCode = 200;
+        res.end();
+        return;
+      }
+      next();
+    });
+
     app.use(finalHandler);
 
     let {server, stop} = await createHTTPServer({
