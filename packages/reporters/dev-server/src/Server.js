@@ -40,7 +40,7 @@ export function setHeaders(res: Response) {
   );
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Content-Type',
+    'Origin, X-Requested-With, Content-Type, Accept, Content-Type', 'Authorization',
   );
   res.setHeader('Cache-Control', 'max-age=0, must-revalidate');
 }
